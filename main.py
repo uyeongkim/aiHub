@@ -228,13 +228,11 @@ def main_worker(gpu, ngpus_per_node, args):
     transform_train=transforms.Compose([
             transforms.RandomResizedCrop(224),
             transforms.RandomHorizontalFlip(),
-            transforms.ToTensor(),
             normalize,
         ])
     transform_val=transforms.Compose([
             transforms.Resize(256),
             transforms.CenterCrop(224),
-            transforms.ToTensor(),
             normalize,
         ])
 
@@ -313,6 +311,7 @@ def train(train_loader, model, criterion, optimizer, epoch, args):
         if args.gpu is not None:
             images = images.cuda(args.gpu, non_blocking=True)
         if torch.cuda.is_available():
+            target=torch.Tensor(target)
             target = target.cuda(args.gpu, non_blocking=True)
 
         # compute output
